@@ -1,2 +1,13 @@
-# apps-within-2hours
-keep practice to complete within 2 hours.
+## Hard work works
+러프하게 첫 시도 -> 코드 정리 -> 이후 반복 -> 3회 이상 2시간 안에 완성 시 다음 앱 넘어가기
+
+**개발 속도는 코드에 대한 익숙함을 측정하는 기준일 뿐, 앱 성능이나 품질과 연관이 없습니다.**
+
+
+## List
+
+|seq|name|description|
+|--|--|--|
+|1|[비용 계산 앱](./app1/README.md)| 항목을 입력하면 유형 별 금액 또는 누적 금액을 알려줍니다.| 
+
+
