@@ -72,6 +72,21 @@ class ReportViewController: UIViewController {
     }
 
 
+    @IBAction func transferExpenseToMessage(_ sender: Any) {
+        let message =
+        """
+        \(totalExpenseLabel.text!)
+        \(stayExpenseLabel.text!)
+        \(transportationExpenseLabel.text!)
+        \(foodExpenseLabel.text!)
+        \(etcExpenseLabel.text!)
+        """
+        var sms: String = "sms:01077592473&body=" + message
+        sms = sms.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
+        
+        UIApplication.shared.open(URL.init(string:sms)!,options: [:])
+        
+    }
 }
 
 extension ReportViewController : UITableViewDataSource {

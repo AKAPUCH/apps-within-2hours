@@ -28,15 +28,24 @@ class FormViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setNavi()
+        expenseAmountTextField.addTarget(self, action: #selector(checkForm), for: .allEditingEvents)
     }
     
     func setNavi() {
         self.navigationItem.title = "비용 등록"
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "취소", style: .plain, target: self, action: #selector(cancelForm))
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "저장", style: .plain, target: self, action: #selector(saveForm))
+        self.navigationItem.rightBarButtonItem?.isEnabled = false
     }
     
-    
+    @objc func checkForm() {
+        guard let s = expenseAmountTextField.text, let _ = Int(s) else {
+            self.navigationItem.rightBarButtonItem?.isEnabled = false
+            return
+        }
+        self.navigationItem.rightBarButtonItem?.isEnabled = true
+        
+    }
     
     @objc func cancelForm() {
         self.dismiss(animated: true)
@@ -51,3 +60,4 @@ class FormViewController: UIViewController {
 
 
 }
+

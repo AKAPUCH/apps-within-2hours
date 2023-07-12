@@ -68,6 +68,9 @@
                                         <rect key="frame" x="0.0" y="0.0" width="53.666666666666664" height="34.333333333333336"/>
                                         <state key="normal" title="Button"/>
                                         <buttonConfiguration key="configuration" style="plain" title="공유"/>
+                                        <connections>
+                                            <action selector="transferExpenseToMessage:" destination="TSZ-2L-iqt" eventType="touchUpInside" id="vZA-SJ-uIN"/>
+                                        </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rDV-hi-VUX">
                                         <rect key="frame" x="61.666666666666629" y="0.0" width="53.666666666666657" height="34.333333333333336"/>
