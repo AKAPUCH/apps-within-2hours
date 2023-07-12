@@ -4,6 +4,8 @@ import Foundation
 
 struct Expense {
     var kind : String?
-    var amount : Int?
+    var amount : Int = 0
     var desc : String?
 }
+
+

@@ -9,6 +9,10 @@ import UIKit
 
 class ExpenseTableViewCell: UITableViewCell {
 
+    @IBOutlet weak var expenseKindLabel: UILabel!
+    @IBOutlet weak var expenseAmountLabel: UILabel!
+    @IBOutlet weak var expenseDescLabel: UILabel!
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
