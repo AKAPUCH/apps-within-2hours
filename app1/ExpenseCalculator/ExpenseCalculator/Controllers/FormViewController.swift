@@ -10,7 +10,7 @@ import UIKit
 class FormViewController: UIViewController {
     
     weak var delegate : FormViewControllerDelegate?
-    
+
     @IBOutlet weak var expenseSelection: UISegmentedControl!
     
     @IBOutlet weak var expenseAmountTextField: UITextField!
@@ -29,6 +29,7 @@ class FormViewController: UIViewController {
         super.viewDidLoad()
         setNavi()
         expenseAmountTextField.addTarget(self, action: #selector(checkForm), for: .allEditingEvents)
+
     }
     
     func setNavi() {
@@ -36,6 +37,21 @@ class FormViewController: UIViewController {
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "취소", style: .plain, target: self, action: #selector(cancelForm))
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "저장", style: .plain, target: self, action: #selector(saveForm))
         self.navigationItem.rightBarButtonItem?.isEnabled = false
+    }
+    
+    func getAlertView(_ expense : Expense) -> UIAlertController{
+        let creationMessage = """
+        비용 종류 : \(expense.kind!)
+        비용 금액 : \(expense.amount)
+        비용 정보 : \(expense.desc!)
+        """
+        let creationAlert = UIAlertController(title: "신규 비용 생성 성공!", message: creationMessage, preferredStyle: .alert)
+        creationAlert.addAction(UIAlertAction(title: "확인", style: .default){_ in
+            self.delegate?.dismissForm(expense)
+            self.dismiss(animated: true)
+        })
+    
+        return creationAlert
     }
     
     @objc func checkForm() {
@@ -53,8 +69,7 @@ class FormViewController: UIViewController {
     
     @objc func saveForm() {
         let newExpense = Expense(kind: expenseKind,amount: Int(expenseAmountTextField.text!)!,desc: expenseDetailTextField.text)
-        self.delegate?.dismissForm(newExpense)
-        self.dismiss(animated: true)
+        self.present(getAlertView(newExpense),animated: true)
     }
     
 
