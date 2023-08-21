@@ -19,6 +19,8 @@ class ReportViewController: UIViewController {
         return n
     }()
     
+    // 파일 경로 설정
+    let filePath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!.appendingPathComponent("expense.json").path
     
     @IBOutlet weak var totalExpenseLabel: UILabel!
     @IBOutlet weak var stayExpenseLabel: UILabel!
@@ -31,7 +33,11 @@ class ReportViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setLabel()
-        
+
+        // 객체 불러오기
+        if let loadedExpenseArray: [Expense] = loadCustomObjectFromFile([Expense].self, fromPath: filePath) {
+            expenseArray = loadedExpenseArray
+        }
     }
     
     func getExpense(_ target : [String?:Int], _ kind : String?) -> Int {
@@ -51,11 +57,24 @@ class ReportViewController: UIViewController {
         calculateExpense()
     }
     
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "navi" {
-            if let target = segue.destination as? UINavigationController,let nextVC = target.topViewController as? FormViewController {
-                nextVC.delegate = self
-            }
+    func saveCustomObjectToFile(_ object: Codable, toPath path: String) {
+        do {
+            let data = try JSONEncoder().encode(object)
+            FileManager.default.createFile(atPath: path, contents: data, attributes: nil)
+            try data.write(to: URL(fileURLWithPath: path))
+        } catch {
+            print("Error saving custom object: \(error)")
+        }
+    }
+
+    func loadCustomObjectFromFile<T: Codable>(_ type: T.Type, fromPath path: String) -> T? {
+        do {
+            let data = try Data(contentsOf: URL(fileURLWithPath: path))
+            let object = try JSONDecoder().decode(type, from: data)
+            return object
+        } catch {
+            print("Error loading custom object: \(error)")
+            return nil
         }
     }
     
@@ -70,8 +89,15 @@ class ReportViewController: UIViewController {
         etcExpenseLabel.text = makeText("기타", getExpense(dict, "기타"))
         totalExpenseLabel.text = makeText("누적 금액", dict.values.reduce(0,+))
     }
-
-
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "navi" {
+            if let target = segue.destination as? UINavigationController,let nextVC = target.topViewController as? FormViewController {
+                nextVC.delegate = self
+            }
+        }
+    }
+    
     @IBAction func transferExpenseToMessage(_ sender: Any) {
         let message =
         """
@@ -112,6 +138,9 @@ extension ReportViewController : FormViewControllerDelegate {
             expenseArray.append(dataModel)
             expenseTable.insertRows(at: [[0,expenseArray.count-1]], with: .automatic)
         })
+        
+        // 객체 저장
+        saveCustomObjectToFile(expenseArray, toPath: filePath)
     }
     
     
